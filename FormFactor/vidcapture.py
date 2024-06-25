@@ -31,7 +31,7 @@ def capture(directory):
             for n in contours:
                 area = cv2.contourArea(n)
 
-                if area > 100:
+                if area < 100:
                     x, y, w, h = cv2.boundingRect(n)
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
                     write.writerow([counter, (h//2)+y])

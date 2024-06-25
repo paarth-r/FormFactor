@@ -51,24 +51,23 @@ intervaleqs = []
 def graph(sectlen):
     read_captured()
     read_ideal()
-    slope, intercept, r, p, std_err = stats.linregress(captured_x_vals[0:10], captured_y_vals[0:10])
+    slope, intercept, r, p, std_err = stats.linregress(captured_x_vals[0:sectlen], captured_y_vals[0:sectlen])
 
     curslope = sign(slope)
 
-    sectlen = 50
     for n in range(sectlen, len(captured_x_vals)):
         i = n-sectlen
         slope, _, _, _, _ = stats.linregress(captured_x_vals[i:n], captured_y_vals[i:n])
         if sign(slope) != sign(curslope):
-            intervals[-1].append(n-5)
-            intervals.append([n-4])
-            curslope *= -1
+            intervals[-1].append(n+(sectlen//2))
+            intervals.append([n+(sectlen//2)])
+            print(slope)
+            curslope = slope
         
     intervals.pop(-1)
 
     for n in intervals:
         plt.axvline(x = n[1], label = 'axvline - full height')
-        intervaleqs.append(np.polyfit(captured_x_vals[n[0]:n[1]],captured_y_vals[n[0]:n[1]], 2))
     plt.plot(xvals, yvals)
     plt.plot(captured_x_vals, captured_y_vals)
     plt.ylabel("stuff")
